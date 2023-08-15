@@ -9,7 +9,9 @@ function App() {
 
   useEffect(() => {
     fetchData().then((fetchedData) => {
-      setData(fetchedData);
+      if (fetchedData && fetchedData.historic_figures) {
+        setData(fetchedData.historic_figures);
+      }
     });
   }, []);
 
