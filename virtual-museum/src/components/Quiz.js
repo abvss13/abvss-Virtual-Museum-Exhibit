@@ -1,4 +1,3 @@
-// Quiz.js
 import React from 'react';
 
 const Quiz = () => (
