@@ -1,4 +1,3 @@
-// SearchAndFilter.js
 import React from 'react';
 
 const SearchAndFilter = () => (
