@@ -1,10 +1,9 @@
-// ArtifactDisplay.js
 import React from 'react';
 
-const ArtifactDisplay = () => (
-  <div className="artifact-display">
-    {/* Add your artifact display components here */}
+const SearchAndFilter = () => (
+  <div className="search-and-filter">
+    {/* Add your search and filtering components here */}
   </div>
 );
 
-export default ArtifactDisplay;
+export default SearchAndFilter;
