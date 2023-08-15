@@ -1,8 +1,10 @@
 import React from 'react';
 
-const EducationalContent = () => (
+
+const EducationalContent = ({ content }) => (
   <div className="educational-content">
-    {/* Add your educational content components here */}
+    <h4>Educational Content:</h4>
+    <p>{content}</p>
   </div>
 );
 
