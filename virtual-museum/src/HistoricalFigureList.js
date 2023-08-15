@@ -3,6 +3,7 @@ import './App.css'; // Import your CSS file
 
 function HistoricalFigureList() {
   const [historicFigures, setHistoricFigures] = useState([]);
+  const [originalFigures, setOriginalFigures] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [expandedFigure, setExpandedFigure] = useState(null);
@@ -13,6 +14,7 @@ function HistoricalFigureList() {
       .then(response => response.json())
       .then(data => {
         setHistoricFigures(data.historic_figures);
+        setOriginalFigures(data.historic_figures); // Store original data for search reset
         setIsLoading(false);
       })
       .catch(error => {
@@ -35,7 +37,7 @@ function HistoricalFigureList() {
 
   const handleSearch = event => {
     const searchTerm = event.target.value.toLowerCase();
-    const filteredFigures = historicFigures.filter(
+    const filteredFigures = originalFigures.filter(
       figure => figure.name.toLowerCase().includes(searchTerm)
     );
     setHistoricFigures(filteredFigures);
@@ -43,7 +45,13 @@ function HistoricalFigureList() {
 
   const handleResetSearch = () => {
     // Reset the search by setting figures back to original data
-    setHistoricFigures(historicFigures);
+    setHistoricFigures(originalFigures);
+  };
+
+  const handleSortByYear = () => {
+    const sortedFigures = [...historicFigures];
+    sortedFigures.sort((a, b) => a.birth_year - b.birth_year);
+    setHistoricFigures(sortedFigures);
   };
 
   if (isLoading) {
@@ -56,13 +64,18 @@ function HistoricalFigureList() {
 
   return (
     <div className="figure-list">
-      <div className="search-bar">
-        <input
-          type="text"
-          placeholder="Search by name..."
-          onChange={handleSearch}
-        />
-        <button onClick={handleResetSearch}>Reset</button>
+      <div className="controls">
+        <div className="search-bar">
+          <input
+            type="text"
+            placeholder="Search by name..."
+            onChange={handleSearch}
+          />
+          <button onClick={handleResetSearch}>Reset</button>
+        </div>
+        <button className="sort-button" onClick={handleSortByYear}>
+          Sort by Birth Year
+        </button>
       </div>
       {historicFigures.map((figure, index) => (
         <div key={index} className={`figure ${expandedFigure === index ? 'expanded' : ''}`}>
@@ -79,10 +92,14 @@ function HistoricalFigureList() {
                   ))}
                 </ul>
               </div>
-              <button className="close-button" onClick={handleClose}>Close</button>
+              <button className="close-button" onClick={handleClose}>
+                Close
+              </button>
             </div>
           ) : (
-            <button className="more-info-button" onClick={() => toggleExpansion(index)}>More Info</button>
+            <button className="more-info-button" onClick={() => toggleExpansion(index)}>
+              More Info
+            </button>
           )}
         </div>
       ))}

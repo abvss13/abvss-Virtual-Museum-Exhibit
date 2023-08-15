@@ -1,4 +1,3 @@
-/* HistoricalFigureList.css */
 body {
   background-color: #f2f2f2;
   margin: 0;
@@ -29,6 +28,7 @@ h1 {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   background-color: #fff;
   transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
 }
 
 .figure:hover {
@@ -51,10 +51,12 @@ h1 {
 
 .expanded-info p {
   margin: 10px 0;
+  color: #333;
 }
 
 .accomplishments {
   margin-top: 20px;
+  color: #555;
 }
 
 .accomplishments h3 {
@@ -65,7 +67,6 @@ h1 {
 .accomplishments ul {
   list-style: disc;
   margin-left: 20px;
-  color: #555;
 }
 
 .button-container {
