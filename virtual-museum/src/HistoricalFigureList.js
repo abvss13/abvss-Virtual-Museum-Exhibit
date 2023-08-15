@@ -33,6 +33,19 @@ function HistoricalFigureList() {
     setExpandedFigure(null);
   };
 
+  const handleSearch = event => {
+    const searchTerm = event.target.value.toLowerCase();
+    const filteredFigures = historicFigures.filter(
+      figure => figure.name.toLowerCase().includes(searchTerm)
+    );
+    setHistoricFigures(filteredFigures);
+  };
+
+  const handleResetSearch = () => {
+    // Reset the search by setting figures back to original data
+    setHistoricFigures(historicFigures);
+  };
+
   if (isLoading) {
     return <div className="loading">Loading...</div>;
   }
@@ -43,6 +56,14 @@ function HistoricalFigureList() {
 
   return (
     <div className="figure-list">
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="Search by name..."
+          onChange={handleSearch}
+        />
+        <button onClick={handleResetSearch}>Reset</button>
+      </div>
       {historicFigures.map((figure, index) => (
         <div key={index} className={`figure ${expandedFigure === index ? 'expanded' : ''}`}>
           <img src={figure.img_url} alt={figure.name} />
