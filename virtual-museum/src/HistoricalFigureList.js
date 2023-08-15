@@ -7,7 +7,7 @@ function HistoricalFigureList() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [expandedFigure, setExpandedFigure] = useState(null);
-
+  const [searchTerm, setSearchTerm] = useState('');
   useEffect(() => {
     // Fetch data from the API
     fetch('https://api.npoint.io/f3fd7456f67459fc2386') // Provided API endpoint
@@ -36,15 +36,16 @@ function HistoricalFigureList() {
   };
 
   const handleSearch = event => {
-    const searchTerm = event.target.value.toLowerCase();
+    const newSearchTerm = event.target.value.toLowerCase();
+    setSearchTerm(newSearchTerm);
     const filteredFigures = originalFigures.filter(
-      figure => figure.name.toLowerCase().includes(searchTerm)
+      figure => figure.name.toLowerCase().includes(newSearchTerm)
     );
     setHistoricFigures(filteredFigures);
   };
 
   const handleResetSearch = () => {
-    // Reset the search by setting figures back to original data
+    setSearchTerm('');
     setHistoricFigures(originalFigures);
   };
 
@@ -69,40 +70,51 @@ function HistoricalFigureList() {
           <input
             type="text"
             placeholder="Search by name..."
+            value={searchTerm}
             onChange={handleSearch}
           />
-          <button onClick={handleResetSearch}>Reset</button>
+          <button className="reset-button" onClick={handleResetSearch}>
+            Reset
+          </button>
         </div>
         <button className="sort-button" onClick={handleSortByYear}>
           Sort by Birth Year
         </button>
       </div>
-      {historicFigures.map((figure, index) => (
-        <div key={index} className={`figure ${expandedFigure === index ? 'expanded' : ''}`}>
-          <img src={figure.img_url} alt={figure.name} />
-          <h2>{figure.name}</h2>
-          {expandedFigure === index ? (
-            <div className="expanded-info">
-              <p>{figure.description}</p>
-              <div className="accomplishments">
-                <h3>Accomplishments:</h3>
-                <ul>
-                  {figure.accomplishments.map((accomplishment, idx) => (
-                    <li key={idx}>{accomplishment}</li>
-                  ))}
-                </ul>
+      <div className="figures">
+        {historicFigures.map((figure, index) => (
+          <div
+            key={index}
+            className={`figure ${expandedFigure === index ? 'expanded' : ''}`}
+          >
+            <img src={figure.img_url} alt={figure.name} />
+            <h2>{figure.name}</h2>
+            {expandedFigure === index ? (
+              <div className="expanded-info">
+                <p>{figure.description}</p>
+                <div className="accomplishments">
+                  <h3>Accomplishments:</h3>
+                  <ul>
+                    {figure.accomplishments.map((accomplishment, idx) => (
+                      <li key={idx}>{accomplishment}</li>
+                    ))}
+                  </ul>
+                </div>
+                <button className="close-button" onClick={handleClose}>
+                  Close
+                </button>
               </div>
-              <button className="close-button" onClick={handleClose}>
-                Close
+            ) : (
+              <button
+                className="more-info-button"
+                onClick={() => toggleExpansion(index)}
+              >
+                More Info
               </button>
-            </div>
-          ) : (
-            <button className="more-info-button" onClick={() => toggleExpansion(index)}>
-              More Info
-            </button>
-          )}
-        </div>
-      ))}
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
